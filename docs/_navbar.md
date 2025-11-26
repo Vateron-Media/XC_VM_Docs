@@ -2,5 +2,5 @@
 
 - Translations
 
-  - [English](/en-us/)
-  - [Русский](/ru-ru/)
+  - 🇺🇸 [English](/en-us/)
+  - 🇷🇺 [Русский](/ru-ru/)
