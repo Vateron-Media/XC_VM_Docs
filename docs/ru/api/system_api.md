@@ -12,9 +12,9 @@
 ```
 
 ## Обзор архитектуры API
-**Базовый URI**: `http://<host>:25461/api.php`  
+**Базовый URI**: `http://<host>:<http port>/api.php`  
 **Аутентификация**: `password` параметр, соответствующий конфигурации `live_streaming_pass`
-**Пример**: `http://<host>:25461/api.php?&password=<live_streaming_pass>`  
+**Пример**: `http://<host>:<http port>/api.php?password=<live_streaming_pass>&action=<api endpoint>`  
 
 ---
 

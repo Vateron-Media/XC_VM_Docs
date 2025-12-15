@@ -14,10 +14,10 @@
 
 ## API Architecture Overview
 
-**Base URI:** `http://<host>:25461/api.php`
+**Base URI:** `http://<host>:<http port>/api.php`
 **Authentication:** `password` parameter matching the `live_streaming_pass` configuration
 **Example:**
-`http://<host>:25461/api.php?&password=<live_streaming_pass>`
+`http://<host>:<http port>/api.php?password=<live_streaming_pass>&action=<api endpoint>`
 
 ---
 

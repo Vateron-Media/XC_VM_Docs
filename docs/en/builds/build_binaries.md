@@ -223,7 +223,8 @@ cd php-8.1.33
   --with-libxml \
   --with-pdo-mysql \
   --disable-mbregex \
-  --with-pear
+  --with-pear \
+  --enable-mbstring
 ```
 
 ### 4. Build and Install
