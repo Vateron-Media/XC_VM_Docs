@@ -17,6 +17,7 @@
   - [🔒 Генерация SSL-сертификата](ru-ru/administration/ssl-generation.md)
 
 - 📦 **Дополнительно**
+  - [🎬 Watchfolder](ru-ru/info/watch_folder.md)
   - [⚙️ Как работает обновление панели](ru-ru/administration/update-system.md)
   - [🧭 Миграция с других систем](ru-ru/info/migration_guide.md)
   - [❓ FAQ](ru-ru/info/faq.md)

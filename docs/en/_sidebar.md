@@ -17,6 +17,7 @@
   - [🔒 SSL Certificate Generation](en-us/administration/ssl-generation.md)
 
 - 📦 **Additional**
+  - [🎬 Watchfolder](en-us/info/watch_folder.md)
   - [⚙️ How the Update System Works](en-us/administration/update-system.md)
   - [🧭 Migration from Other Systems](en-us/info/migration_guide.md)
   - [❓ FAQ](en-us/info/faq.md)
