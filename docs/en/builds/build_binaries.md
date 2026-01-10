@@ -171,7 +171,7 @@ mv /home/xc_vm/bin/nginx_rtmp/sbin/nginx /home/xc_vm/bin/nginx_rtmp/sbin/nginx_r
 ```bash
 sudo apt-get install -y \
   libcurl4-gnutls-dev libbz2-dev libzip-dev autoconf automake \
-  libtool m4 gcc make pkg-config libmaxminddb-dev libssh2-1-dev
+  libtool m4 gcc make pkg-config libmaxminddb-dev libssh2-1-dev libfreetype6-dev libpng-dev libjpeg-dev
 ```
 
 ### 2. Download PHP Source
