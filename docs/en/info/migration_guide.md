@@ -21,6 +21,11 @@
 > 💡 **Recommendation:**
 > It’s best to perform migration on a **fresh XC_VM installation**.
 
+> ⚠️ **Important:**
+> **System and panel settings are NOT migrated.**
+> Only database data supported by the migration process is transferred.
+> You must reconfigure all settings manually after migration.
+
 If you decide to use an **existing installation**, note the following:
 
 * XC_VM **will delete all tables** in your main database that match the data found in your migration database.
@@ -93,6 +98,7 @@ If you cannot log in (e.g., due to missing username/password or invalid access c
 
 * Load balancers will initially appear **disabled**.
 * All streams will **automatically stop** for safety.
+* **All system, panel, and server settings must be reconfigured manually.**
 
 ### Next Steps
 
