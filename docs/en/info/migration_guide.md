@@ -94,23 +94,104 @@ If you cannot log in (e.g., due to missing username/password or invalid access c
 
 ---
 
-## 🧩 Post-Migration
-
-* Load balancers will initially appear **disabled**.
-* All streams will **automatically stop** for safety.
-* **All system, panel, and server settings must be reconfigured manually.**
-
-### Next Steps
-
-1. Reinstall load balancers and **manually start streams** after confirming migration.
-2. Review and update **XC_VM default settings**.
-3. Check main server data — domains, SSL configuration, etc.
-4. Ensure everything matches your environment and settings.
-
----
-
 ## 🖥️ Load Balancer Preparation
 
 You will need to reinstall the OS on the load balancers.
+
+---
+
+> **Warning:**  
+> After migration, certain configuration values are **not automatically migrated** and must be manually reconfigured.  
+> This includes **providers** and **API keys (e.g., TMDb)**. If metadata fetching or stream title syncing does not work after migration, please follow the post-migration steps to restore full functionality.  
+> Failure to reconfigure these settings may lead to unexpected behavior.
+
+## 🧩 Post-Migration Steps
+
+After completing a migration, additional manual steps are required to restore full functionality.  
+Not all configuration values, providers, secrets, or runtime state are migrated automatically.
+
+Skipping these steps may result in missing features or behavior that appears broken but is expected.
+
+---
+
+### 1. Reinstall Load Balancers and Restart Streams
+
+- Reinstall or reconfigure load balancers as required for your environment.
+- Manually start all streams once the migration has completed.
+- Verify that streams are accessible and operating normally.
+
+> Stream runtime state is not preserved during migration and must be reinitialized manually.
+
+---
+
+### 2. Review and Update `XC_VM` Default Settings
+
+- Review all `XC_VM` default configuration values.
+- Update any environment-specific settings (paths, limits, networking, performance tuning, etc.).
+- **Do not assume defaults will match your pre-migration setup, as these settings are not migrated.**
+
+---
+
+### 3. Verify Main Server Configuration
+
+Review the main server configuration to ensure it matches your environment, including:
+
+- Domains and hostnames  
+- SSL / TLS configuration  
+- Reverse proxy or networking settings  
+
+#### Providers and API Keys Are Not Migrated
+
+The following are not migrated and must be reconfigured manually after migration:
+
+- **Providers**
+- **TMDb API key**
+
+This is expected behavior.
+
+> **Important:**  
+> If metadata fetching (e.g., TMDb) does not work after migration, verify that the API key has been re-added and the relevant provider has been configured.  
+> This does not indicate a migration bug.
+
+> Providers are not migrated at this time. This may become a feature enhancement in the future but is expected behavior for now.
+
+---
+
+### 4. Common Post-Migration Issues
+
+#### Metadata Is Not Fetching (TMDb)
+
+**Cause:**  
+TMDb API key and provider configuration are not migrated.
+
+**Resolution:**  
+Reconfigure the TMDb provider and re-add the API key in the main server settings.
+
+---
+
+#### Providers Are Missing or Disabled
+
+**Cause:**  
+Providers are **not migrated** as part of the migration process.
+
+**Resolution:**  
+Manually reconfigure all required providers after migration.
+
+---
+
+#### Stream Title Sync Is Not Working
+
+**Cause:**  
+Since providers are not migrated, the stream title sync feature will not function properly. The UI may show the "sync'd" icon, but there is no active provider to sync to.
+
+**Resolution:**  
+After configuring your providers, edit the streams and re-sync them to the relevant provider. This will restore proper title syncing.
+
+---
+
+### Summary
+
+Migration transfers core application data only.  
+Environment-specific configuration, providers, and API keys must be manually reconfigured after migration.
 
 ---
