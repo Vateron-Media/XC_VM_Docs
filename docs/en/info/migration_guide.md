@@ -1,35 +1,59 @@
 <h1 align="center">🧭 XC_VM Migration Guide</h1>
 
 <p align="center">
-  Easily migrate from compatible IPTV systems using the built-in XC_VM migration tool.
+  Safely migrate from compatible IPTV systems using the built-in XC_VM migration tools.
 </p>
 
 ---
 
 ## 📚 Navigation
 
-* [⚙️ Before You Start](#before-you-start)
-* [🚀 Migration Steps](#migration-steps)
-* [🔑 Restoring Access After Migration](#restoring-access-after-migration)
-* [🧩 Post-Migration](#post-migration)
-* [🖥️ Load Balancer Preparation](#load-balancer-preparation)
+* [⚠️ Critical Migration Notice](#️-critical-migration-notice)
+* [⚙️ Before You Start](#️-before-you-start)
+* [🚀 Migration Steps](#-migration-steps)
+* [🔑 Restoring Access After Migration](#-restoring-access-after-migration)
+* [🖥️ Load Balancer Preparation](#️-load-balancer-preparation)
+* [🧩 Post-Migration (Required)](#-post-migration-required)
+* [❗ Common Post-Migration Issues](#-common-post-migration-issues)
+* [✅ Summary](#-summary)
+
+---
+
+## ⚠️ Critical Migration Notice
+
+> **Read this before starting the migration.**
+
+XC_VM migration transfers **data only**.
+**All configuration is intentionally excluded from migration.**
+
+This includes (but is not limited to):
+
+* API keys (e.g. **TMDb**)
+* External service credentials
+* Environment-specific settings
+* Panel and system configuration
+* Runtime and stream state
+
+These values **must be reconfigured manually after migration**.
+
+This is a **design decision**, not a limitation or a bug.
+Skipping reconfiguration will **break metadata fetching, stream title updates, and related features**.
 
 ---
 
 ## ⚙️ Before You Start
 
 > 💡 **Recommendation:**
-> It’s best to perform migration on a **fresh XC_VM installation**.
+> Perform migration on a **fresh XC_VM installation**.
 
 > ⚠️ **Important:**
-> **System and panel settings are NOT migrated.**
+> System and panel settings are **NOT migrated**.
 > Only database data supported by the migration process is transferred.
-> You must reconfigure all settings manually after migration.
 
-If you decide to use an **existing installation**, note the following:
+If you choose to migrate into an **existing installation**, be aware:
 
-* XC_VM **will delete all tables** in your main database that match the data found in your migration database.
-* Always **create backups** before performing migration.
+* XC_VM will **delete all tables** in the main database that match data from the migration database.
+* **Backups are mandatory.** No automatic rollback is provided.
 
 ---
 
@@ -37,28 +61,33 @@ If you decide to use an **existing installation**, note the following:
 
 ### 1. Upload Backup
 
-Upload your existing database backup to the XC_VM server via **SFTP**.
-In this example, it is located at:
+Upload your existing database backup to the XC_VM server using **SFTP**.
 
-```
+Example location:
+
+```text
 /tmp/backup.sql
 ```
 
-### 2. Restore Backup to Migration Database
+---
 
-Use the tools script to clear the existing migration database and restore the backup:
+### 2. Restore Backup into Migration Database
+
+Clear the migration database and restore the backup:
 
 ```bash
 /home/xc_vm/tools migration "/tmp/backup.sql"
 ```
 
+Ensure the restore completes **without errors** before proceeding.
+
+---
+
 ### 3. Start Migration
 
-If the restoration completed without errors, you can start the migration using one of two methods:
+Once the backup is restored, start the migration using one of the following methods.
 
 #### 🧩 Option 1 — Command Line (Recommended)
-
-Run the migration manually:
 
 ```bash
 /home/xc_vm/bin/php/bin/php /home/xc_vm/includes/cli/migrate.php
@@ -66,17 +95,18 @@ Run the migration manually:
 
 #### 🌐 Option 2 — Web Installer
 
-If you prefer not to use the command line, you can return to the **web installer** via the link provided during panel setup.
-Select the **“Migration”** option and follow the on-screen instructions to complete the process interactively.
+* Return to the **web installer** (link shown during panel setup)
+* Select **Migration**
+* Follow the on-screen instructions
 
-You will see real-time progress updates while XC_VM migrates your data.
-Once complete, you will be able to log in to your system.
+You will see real-time progress updates.
+Once completed, the system will be accessible.
 
 ---
 
 ## 🔑 Restoring Access After Migration
 
-If you cannot log in (e.g., due to missing username/password or invalid access code), you can use **rescue tools**:
+If login fails due to missing credentials or access code, use the rescue tools.
 
 ### Create a Rescue Access Code
 
@@ -84,114 +114,90 @@ If you cannot log in (e.g., due to missing username/password or invalid access c
 /home/xc_vm/tools access
 ```
 
-### Create an Administrator to Restore Access
+### Create an Administrator Account
 
 ```bash
 /home/xc_vm/tools user
 ```
 
-> ⚠️ After logging in, immediately **change the access code and administrator credentials**.
+> ⚠️ After regaining access, **immediately change** the access code and administrator credentials.
 
 ---
 
 ## 🖥️ Load Balancer Preparation
 
-You will need to reinstall the OS on the load balancers.
+Load balancers are **not migrated**.
+
+* Reinstall the operating system if required
+* Reconfigure networking and routing
+* Reconnect them to the main server
 
 ---
 
-> **Warning:**  
-> After migration, certain configuration values are **not automatically migrated** and must be manually reconfigured.  
-> This includes **providers** and **API keys (e.g., TMDb)**. If metadata fetching or stream title syncing does not work after migration, please follow the post-migration steps to restore full functionality.  
-> Failure to reconfigure these settings may lead to unexpected behavior.
+## 🧩 Post-Migration (Required)
 
-## 🧩 Post-Migration Steps
+After migration, the system is **not production-ready** until these steps are completed.
 
-After completing a migration, additional manual steps are required to restore full functionality.  
-Not all configuration values, providers, secrets, or runtime state are migrated automatically.
-
-Skipping these steps may result in missing features or behavior that appears broken but is expected.
+Skipping them will result in **expected but broken behavior**.
 
 ---
 
-### 1. Reinstall Load Balancers and Restart Streams
+### 1. Reinitialize Runtime State
 
-- Reinstall or reconfigure load balancers as required for your environment.
-- Manually start all streams once the migration has completed.
-- Verify that streams are accessible and operating normally.
+* Start all streams manually
+* Verify streams are accessible and stable
 
-> Stream runtime state is not preserved during migration and must be reinitialized manually.
-
----
-
-### 2. Review and Update `XC_VM` Default Settings
-
-- Review all `XC_VM` default configuration values.
-- Update any environment-specific settings (paths, limits, networking, performance tuning, etc.).
-- **Do not assume defaults will match your pre-migration setup, as these settings are not migrated.**
+> Stream runtime state is **never preserved** during migration.
 
 ---
 
-### 3. Verify Main Server Configuration
+### 2. Reconfigure System Settings
 
-Review the main server configuration to ensure it matches your environment, including:
+Review and restore all environment-specific configuration:
 
-- Domains and hostnames  
-- SSL / TLS configuration  
-- Reverse proxy or networking settings  
+* File paths
+* Limits and quotas
+* Networking and reverse proxy settings
+* Performance tuning
 
-#### Providers and API Keys Are Not Migrated
-
-The following are not migrated and must be reconfigured manually after migration:
-
-- **Providers**
-- **TMDb API key**
-
-This is expected behavior.
-
-> **Important:**  
-> If metadata fetching (e.g., TMDb) does not work after migration, verify that the API key has been re-added and the relevant provider has been configured.  
-> This does not indicate a migration bug.
-
-> Providers are not migrated at this time. This may become a feature enhancement in the future but is expected behavior for now.
+> Do **not** assume default values match your previous setup.
+> Defaults are applied intentionally.
 
 ---
 
-### 4. Common Post-Migration Issues
+### 3. Restore API Keys and Providers
 
-#### Metadata Is Not Fetching (TMDb)
+#### API Keys Are Never Migrated
 
-**Cause:**  
-TMDb API key and provider configuration are not migrated.
+The following **must be reconfigured manually**:
 
-**Resolution:**  
-Reconfigure the TMDb provider and re-add the API key in the main server settings.
+* **TMDb API key**
 
----
+This is **expected behavior**.
 
-#### Providers Are Missing or Disabled
-
-**Cause:**  
-Providers are **not migrated** as part of the migration process.
-
-**Resolution:**  
-Manually reconfigure all required providers after migration.
+> If metadata fetching does not work after migration,
+> verify that the API key has been re-added and the provider is enabled.
+> This does **not** indicate a migration bug.
 
 ---
 
-#### Stream Title Sync Is Not Working
+## ❗ Common Post-Migration Issues
 
-**Cause:**  
-Since providers are not migrated, the stream title sync feature will not function properly. The UI may show the "sync'd" icon, but there is no active provider to sync to.
+### Metadata Is Not Fetching (TMDb)
 
-**Resolution:**  
-After configuring your providers, edit the streams and re-sync them to the relevant provider. This will restore proper title syncing.
+**Cause:**
+TMDb API key and provider configuration were not restored.
+
+**Resolution:**
+Re-add the TMDb API key and enable the provider in main server settings.
 
 ---
 
-### Summary
+## ✅ Summary
 
-Migration transfers core application data only.  
-Environment-specific configuration, providers, and API keys must be manually reconfigured after migration.
+* Migration transfers **core application data only**
+* Configuration is **excluded by design**
+* API keys and environment-specific settings **must be restored manually**
+* Missing functionality after migration is **expected until reconfiguration is complete**
 
 ---
